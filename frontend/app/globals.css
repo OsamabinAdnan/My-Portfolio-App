@@ -1,0 +1,412 @@
+@import "tailwindcss";
+
+/* ============================================
+   Aesthetic Cyberpunk Design System
+   Neon Cyan (#00f0ff), Cyber Magenta (#ff007f), 
+   Matrix Emerald (#00ff9f), Deep Obsidian (#07080f)
+   ============================================ */
+
+html {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  background-color: #07080f;
+  color: #f1f5f9;
+}
+
+body {
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  background-color: #07080f;
+  color: #f1f5f9;
+  font-family: var(--font-mono), 'JetBrains Mono', 'Fira Code', monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-mono), 'JetBrains Mono', 'Orbitron', monospace;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* ============================================
+   Cyberpunk Aesthetic Root Variables
+   ============================================ */
+:root {
+  --background: #07080f;
+  --surface: #0c0e17;
+  --surface-card: #0f121f;
+  --surface-hover: #15192b;
+  --foreground: #ffffff;
+  
+  /* Cyber Accents */
+  --cyber-cyan: #00f0ff;
+  --cyber-magenta: #ff007f;
+  --cyber-purple: #a855f7;
+  --cyber-emerald: #00ff9f;
+  --cyber-yellow: #ffe600;
+  
+  --border-cyber: rgba(0, 240, 255, 0.2);
+  --border-cyber-active: rgba(0, 240, 255, 0.6);
+}
+
+/* ============================================
+   Grid & Atmosphere Backgrounds
+   ============================================ */
+.cyber-grid {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+}
+
+.cyber-grid-magenta {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 0, 127, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 0, 127, 0.04) 1px, transparent 1px);
+}
+
+.cyber-scanlines {
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 240, 255, 0.04) 50%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+}
+
+/* ============================================
+   Neon Glow Utilities
+   ============================================ */
+.neon-glow-cyan {
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.35), inset 0 0 15px rgba(0, 240, 255, 0.1);
+}
+
+.neon-glow-magenta {
+  box-shadow: 0 0 25px rgba(255, 0, 127, 0.35), inset 0 0 15px rgba(255, 0, 127, 0.1);
+}
+
+.neon-text-cyan {
+  text-shadow: 0 0 12px rgba(0, 240, 255, 0.65), 0 0 24px rgba(0, 240, 255, 0.3);
+}
+
+.neon-text-magenta {
+  text-shadow: 0 0 12px rgba(255, 0, 127, 0.65), 0 0 24px rgba(255, 0, 127, 0.3);
+}
+
+/* ============================================
+   Cyberpunk Holographic HUD Box
+   ============================================ */
+:where(.hud-box:not(.fixed):not(.absolute)) {
+  position: relative;
+}
+
+.hud-box {
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  background: rgba(12, 14, 23, 0.8);
+  backdrop-filter: blur(12px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hud-box:hover {
+  border-color: rgba(0, 240, 255, 0.6);
+  background: rgba(16, 20, 34, 0.9);
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.18), inset 0 0 20px rgba(0, 240, 255, 0.05);
+  transform: translateY(-2px);
+}
+
+:where(.hud-corner-tl:not(.fixed):not(.absolute)) {
+  position: relative;
+}
+
+.hud-corner-tl::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid #00f0ff;
+  border-left: 2px solid #00f0ff;
+  pointer-events: none;
+  z-index: 2;
+}
+
+:where(.hud-corner-br:not(.fixed):not(.absolute)) {
+  position: relative;
+}
+
+.hud-corner-br::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 10px;
+  height: 10px;
+  border-bottom: 2px solid #ff007f;
+  border-right: 2px solid #ff007f;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ============================================
+   Aesthetic Cyberpunk Buttons (OBIN Signature Hover Paradigm)
+   ============================================ */
+.cyber-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.725rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  color: #00f0ff;
+  background-color: #0a0d18;
+  border: 1px solid #00f0ff;
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .cyber-button {
+    gap: 0.55rem;
+    padding: 0.75rem 1.65rem;
+    font-size: 0.85rem;
+    box-shadow: 0 0 25px rgba(0, 240, 255, 0.35);
+  }
+}
+
+.cyber-button:hover {
+  background-color: #00f0ff;
+  color: #000000;
+  border-color: #00f0ff;
+  box-shadow: 0 0 35px rgba(0, 240, 255, 0.75);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.cyber-button:hover *,
+.cyber-button:hover svg,
+.cyber-button:hover span {
+  color: #000000 !important;
+}
+
+.cyber-button-magenta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.725rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  color: #ff007f;
+  background-color: #0a0d18;
+  border: 1px solid #ff007f;
+  box-shadow: 0 0 15px rgba(255, 0, 127, 0.25);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+@media (min-width: 640px) {
+  .cyber-button-magenta {
+    gap: 0.55rem;
+    padding: 0.75rem 1.65rem;
+    font-size: 0.85rem;
+    box-shadow: 0 0 25px rgba(255, 0, 127, 0.35);
+  }
+}
+
+.cyber-button-magenta:hover {
+  background-color: #ff007f;
+  color: #000000;
+  border-color: #ff007f;
+  box-shadow: 0 0 35px rgba(255, 0, 127, 0.75);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.cyber-button-magenta:hover *,
+.cyber-button-magenta:hover svg,
+.cyber-button-magenta:hover span {
+  color: #000000 !important;
+}
+
+.cyber-button-ghost {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.725rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  color: #00f0ff;
+  background-color: #0a0d18;
+  border: 1px solid #00f0ff;
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+@media (min-width: 640px) {
+  .cyber-button-ghost {
+    gap: 0.55rem;
+    padding: 0.75rem 1.65rem;
+    font-size: 0.85rem;
+    box-shadow: 0 0 25px rgba(0, 240, 255, 0.35);
+  }
+}
+
+.cyber-button-ghost:hover {
+  background-color: #00f0ff;
+  color: #000000;
+  border-color: #00f0ff;
+  box-shadow: 0 0 35px rgba(0, 240, 255, 0.75);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.cyber-button-ghost:hover *,
+.cyber-button-ghost:hover svg,
+.cyber-button-ghost:hover span {
+  color: #000000 !important;
+}
+
+/* Swipe Button (Aligned to OBIN Hover Invert) */
+.swipe-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1rem;
+  border: 1px solid #00f0ff;
+  background-color: #0a0d18;
+  color: #00f0ff;
+  text-decoration: none;
+  font-size: 0.725rem;
+  font-weight: 700;
+  font-family: var(--font-mono), monospace;
+  letter-spacing: 0.05em;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+}
+
+@media (min-width: 640px) {
+  .swipe-button {
+    gap: 0.55rem;
+    padding: 0.75rem 1.6rem;
+    font-size: 0.85rem;
+    box-shadow: 0 0 25px rgba(0, 240, 255, 0.35);
+  }
+}
+
+.swipe-button:hover {
+  background-color: #00f0ff;
+  color: #000000;
+  border-color: #00f0ff;
+  box-shadow: 0 0 35px rgba(0, 240, 255, 0.75);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.swipe-button:hover *,
+.swipe-button:hover svg,
+.swipe-button:hover span {
+  color: #000000 !important;
+}
+
+/* Resume Button in Navbar */
+.resume-button-fill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.15rem;
+  background-color: #0a0d18;
+  color: #00f0ff;
+  border: 1px solid #00f0ff;
+  font-size: 0.825rem;
+  font-family: var(--font-mono), monospace;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.35);
+}
+
+.resume-button-fill:hover {
+  background-color: #00f0ff;
+  color: #000000;
+  border-color: #00f0ff;
+  box-shadow: 0 0 35px rgba(0, 240, 255, 0.75);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.resume-button-fill:hover *,
+.resume-button-fill:hover svg,
+.resume-button-fill:hover span {
+  color: #000000 !important;
+}
+
+/* ============================================
+   Keyframe Animations
+   ============================================ */
+@keyframes scroll-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes scroll-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.animate-scroll-left {
+  animation: scroll-left 32s linear infinite;
+  will-change: transform;
+}
+
+.animate-scroll-right {
+  animation: scroll-right 32s linear infinite;
+  will-change: transform;
+}
+
+/* ============================================
+   Scrollbar & Selection
+   ============================================ */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #07080f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e2438;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00f0ff;
+  box-shadow: 0 0 10px #00f0ff;
+}
+
+::selection {
+  background: #00f0ff;
+  color: #07080f;
+}
