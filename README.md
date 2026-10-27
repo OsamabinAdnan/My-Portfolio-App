@@ -1,202 +1,260 @@
 # Portfolio Application - Osama bin Adnan
 
-Full-stack portfolio website with AI-powered chatbot assistant (OBIN). Built with Next.js 16, FastAPI, and Supabase.
+Modern cyberpunk-styled full-stack portfolio website featuring an autonomous AI chatbot assistant (**OBIN**), dynamic headless content management via **Sanity CMS**, and a high-performance **FastAPI** backend with **Supabase** session management.
+
+**Live Website**: [https://osamabinadnan.vercel.app/](https://osamabinadnan.vercel.app/)  
+**Backend API (Hugging Face)**: [https://osamabinadnan-my-portfolio-backend.hf.space](https://osamabinadnan-my-portfolio-backend.hf.space)
+
+---
 
 ## 🌟 Overview
 
-A modern, responsive portfolio showcasing professional experience, projects, and technical skills. Features an intelligent chatbot assistant that answers questions about the portfolio using AI.
+A modern personal portfolio engineered with a cyberpunk HUD terminal aesthetic to showcase full-stack web applications, agentic AI systems, professional experience, verified certifications, and technical skills. 
 
-**Live Demo**: [Your URL]
+### Key Highlights
+- **Dynamic Content Management**: Powered by **Sanity CMS Studio** embedded at `/studio` for real-time updates to projects, certifications, work experiences, skills, and profile details without code changes.
+- **OBIN (AI Assistant)**: Autonomous conversational agent powered by the **OpenAI Agents SDK** and **OpenRouter**, grounded in live portfolio data, backed by Supabase with persistent session storage and daily query limits.
+- **Visual & Interactive Design**: 3D wireframe geometries with Three.js (`CyberTorusKnot`), micro-interactions with Framer Motion, GSAP entrance sequences, and cyber-grid HUD components.
+- **Decoupled Architecture**: Next.js 16 frontend hosted on **Vercel** with a Python FastAPI backend deployed on **Hugging Face Spaces**.
+
+---
 
 ## 🚀 Tech Stack
 
 ### Frontend
-- **Framework**: Next.js 16 (App Router) + React 19
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS v4
-- **Animations**: Framer Motion, GSAP
-- **State Management**: Zustand
-- **3D Graphics**: Spline, Three.js
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router) + [React 19](https://react.dev/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **CMS**: [Sanity.io](https://www.sanity.io/) (Headless CMS + Sanity Studio v3)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/) & [GSAP](https://gsap.com/)
+- **3D Graphics**: [Three.js](https://threejs.org/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **State Management**: [Zustand](https://github.com/pmndrs/zustand)
+- **Hosting**: [Vercel](https://vercel.com/)
 
 ### Backend
-- **Framework**: FastAPI (Python 3.14+)
-- **Database**: Supabase (PostgreSQL)
-- **AI Agent**: OpenAI Agents SDK
-- **LLM Provider**: OpenRouter (configure via MODEL_NAME env var)
-- **Package Manager**: uv
+- **Framework**: [FastAPI](https://fastapi.tiangolo.com/) (Python 3.12+)
+- **AI Agent**: [OpenAI Agents SDK](https://github.com/openai/openai-agents-python)
+- **Model Routing**: [OpenRouter](https://openrouter.ai/) (NVIDIA Nemotron / Gemma / Claude / OpenAI models with automatic failover)
+- **Database**: [Supabase](https://supabase.com/) (PostgreSQL with Row Level Security)
+- **Package Manager**: [uv](https://astral.sh/uv)
+- **Hosting**: [Hugging Face Spaces](https://huggingface.co/spaces) (Docker containerized)
+
+---
 
 ## 📁 Complete Project Structure
 
 ```
-osamabinadnan/
+My-Portfolio-App/
 │
-├── frontend/                     # Next.js Frontend Application
-│   ├── app/                      # Next.js App Router
-│   │   ├── api/                  # API Routes
-│   │   │   └── ai/chat/          # AI chat fallback endpoint
-│   │   ├── work/                 # Projects showcase page
-│   │   ├── globals.css           # Global styles
-│   │   ├── layout.tsx            # Root layout + metadata
-│   │   ├── not-found.tsx         # Custom 404 page
-│   │   └── page.tsx              # Homepage
+├── frontend/                               # Next.js Application
+│   ├── app/                                # App Router Pages & Endpoints
+│   │   ├── api/
+│   │   │   └── portfolio-data/route.ts     # JSON endpoint supplying Sanity data to AI agent
+│   │   ├── certifications/page.tsx         # Verified certifications showcase
+│   │   ├── projects/page.tsx               # Filterable projects directory
+│   │   ├── studio/[[...tool]]/page.tsx     # Embedded Sanity Studio CMS
+│   │   ├── work/page.tsx                   # Redirect route to /projects
+│   │   ├── globals.css                     # Cyberpunk styles, HUD utility classes & grid
+│   │   ├── layout.tsx                      # Root layout, theme provider & metadata
+│   │   ├── not-found.tsx                   # Cyberpunk 404 error terminal
+│   │   └── page.tsx                        # Main landing page
 │   │
-│   ├── components/               # React Components
-│   │   ├── layout/               # Layout components
-│   │   │   ├── Footer.tsx        # Footer with social links
-│   │   │   └── Header.tsx        # Header with navigation
-│   │   ├── sections/             # Page sections
-│   │   │   ├── AboutIntro.tsx
-│   │   │   ├── ContactSection.tsx
-│   │   │   ├── ExperienceSection.tsx
-│   │   │   ├── HeroSection.tsx
-│   │   │   ├── TechStackSection.tsx
-│   │   │   └── WorkProjects.tsx
-│   │   ├── ui/                   # UI components
-│   │   │   ├── ChatWidget.tsx    # OBIN chatbot
-│   │   │   ├── HoverLink.tsx
-│   │   │   ├── MobileMenu.tsx
-│   │   │   ├── ProjectCard.tsx
-│   │   │   ├── StickySocialSidebar.tsx
-│   │   │   ├── TechStackTabs.tsx
-│   │   │   └── WhatsAppFloat.tsx
-│   │   └── ThemeProvider.tsx
+│   ├── components/                         # Modular React Components
+│   │   ├── layout/                         # Core Shell & Navigation
+│   │   │   ├── Footer.tsx                  # System communication footer & coordinates
+│   │   │   ├── Header.tsx                  # HUD top navigation bar & quick links
+│   │   │   └── PortfolioShell.tsx          # Wrapper handling audio/sidebar/overlays
+│   │   ├── sections/                       # Homepage Sections
+│   │   │   ├── ExperienceTimeline.tsx      # Chronological career trajectory
+│   │   │   ├── HeroSection.tsx             # Interactive 3D hero with dynamic rotating roles
+│   │   │   └── WorkProjects.tsx            # Featured projects showcase
+│   │   ├── ui/                             # Specialized UI Elements
+│   │   │   ├── About.tsx                   # Developer bio, core mission & direct contact
+│   │   │   ├── CertificateModal.tsx        # High-resolution certificate viewer
+│   │   │   ├── ChatWidget.tsx              # OBIN AI terminal chat dialog & suggestions
+│   │   │   ├── CyberTorusKnot.tsx          # Interactive 3D wireframe canvas
+│   │   │   ├── LoadingScreen.tsx           # Cyberpunk boot simulation screen
+│   │   │   ├── MobileMenu.tsx              # Fullscreen mobile navigation overlay
+│   │   │   ├── ProjectCard.tsx             # HUD project card with hover telemetry
+│   │   │   ├── ProjectModal.tsx            # In-depth project details modal
+│   │   │   ├── ScrollProgressBar.tsx       # Top holographic scroll indicator
+│   │   │   ├── StickySocialSidebar.tsx     # Floating collapsible social coordinates
+│   │   │   ├── TechStackBanner.tsx         # Infinite scrolling tech marquee
+│   │   │   ├── TechStackTabs.tsx           # Category-filtered skill matrices
+│   │   │   └── WhatsAppFloat.tsx           # Quick WhatsApp direct connect
+│   │   └── ThemeProvider.tsx               # Context theme provider
 │   │
-│   ├── lib/                      # Utilities and data
-│   │   ├── data/                 # Data files
-│   │   │   ├── data.json         # Portfolio data (single source of truth)
-│   │   │   ├── experience.ts
-│   │   │   ├── profile.ts
-│   │   │   ├── projects.ts
-│   │   │   └── techStack.ts
-│   │   ├── store/                # Zustand stores
-│   │   │   ├── useChatStore.ts
-│   │   │   └── useThemeStore.ts
-│   │   ├── types/                # TypeScript types
-│   │   │   └── index.ts
-│   │   └── utils.ts
+│   ├── lib/                                # Core Utilities & Integrations
+│   │   ├── sanity/
+│   │   │   ├── client.ts                   # Sanity client instance
+│   │   │   ├── image.ts                    # Sanity image URL builder
+│   │   │   └── queries.ts                  # GROQ queries for CMS content
+│   │   ├── store/
+│   │   │   ├── useChatStore.ts             # Zustand store for OBIN chatbot state
+│   │   │   └── useThemeStore.ts            # Zustand store for theme toggles
+│   │   └── types/
+│   │       └── index.ts                    # Shared TypeScript definitions
 │   │
-│   ├── public/                   # Static assets
-│   │   ├── Project-Images/       # Project screenshots
-│   │   ├── Techs-Logos/          # Technology logos
-│   │   └── OsamabinAdnan-Resume.pdf
+│   ├── public/                             # Optimized Static Assets
+│   │   ├── apple-icon.png                  # Apple touch icon
+│   │   ├── favicon.ico                     # Favicon
+│   │   ├── icon.png                        # App icon
+│   │   ├── Neon Cyan Geometric O.webp      # Vector site branding logo
+│   │   ├── osama-about.png                 # Developer portrait
+│   │   └── OsamabinAdnan-Resume.pdf        # Verified downloadable resume
 │   │
-│   ├── .env.local                # Frontend environment variables
-│   ├── next.config.ts            # Next.js configuration
-│   ├── package.json              # Frontend dependencies
-│   ├── README.md                 # Frontend documentation
-│   └── tsconfig.json             # TypeScript configuration
+│   ├── schemas/
+│   │   └── index.ts                        # Sanity document schemas (profile, project, etc.)
+│   ├── sanity.config.ts                    # Sanity Studio configuration
+│   ├── next.config.ts                      # Next.js build & image domain configuration
+│   └── package.json                        # Frontend dependencies & scripts
 │
-├── backend/                      # FastAPI Backend Application
-│   ├── app/                      # Application package
+├── backend/                                # FastAPI Application
+│   ├── app/
 │   │   ├── __init__.py
-│   │   ├── agent.py              # OBIN agent configuration
-│   │   ├── api.py                # FastAPI routes
-│   │   ├── config.py             # Settings loader
-│   │   └── db.py                 # Supabase functions
-│   │
-│   ├── test/                     # Test files
-│   │   └── test_gemini.py
-│   │
-│   ├── .env                      # Backend environment variables
-│   ├── main.py                   # Application entry point
-│   ├── pyproject.toml            # Python dependencies
-│   ├── README.md                 # Backend documentation
-│   └── uv.lock                   # Dependency lock file
+│   │   ├── agent.py                        # OpenAI Agents SDK initialization & rules
+│   │   ├── api.py                          # FastAPI endpoints, CORS & session routing
+│   │   ├── config.py                       # Environment validation & failover models
+│   │   └── db.py                           # Supabase queries & rate limit enforcement
+│   ├── Dockerfile                          # Production container for Hugging Face Spaces
+│   ├── main.py                             # API server entrypoint (Uvicorn)
+│   ├── pyproject.toml                      # Python dependencies (managed via uv)
+│   └── requirements.txt                    # Standard requirements for deployments
 │
-└── README.md                     # This file (root documentation)
+├── .gitignore                              # Git exclusion rules
+└── README.md                               # Project documentation
 ```
 
-## ✨ Key Features
+---
 
-### 1. **OBIN - AI Portfolio Assistant**
-- **Name**: OBIN (Osama's Digital Intelligence)
-- AI-powered chatbot answering portfolio questions
-- Lead capture form (name, email, subject)
-- Large centered modal interface
-- **Rate Limiting**: 3 questions per email per day
-- Session-based chat management
-- Context-aware responses using portfolio data
+## ✨ Key Features & Functionality
 
-### 2. **Responsive Portfolio Website**
-- Modern, animated hero section
-- Interactive project showcase
-- Tech stack with category tabs
-- Work experience timeline
-- Contact section
-- Custom 404 page
+### 1. OBIN - Autonomous AI Portfolio Assistant
+- **Name**: `OBIN` (Osama's Binary Intelligence Node)
+- **Architecture**: Powered by the **OpenAI Agents SDK** with model failover via **OpenRouter** (`NVIDIA Nemotron`, `Google Gemma`, etc.).
+- **Grounded Responses**: Fetches live portfolio data from `/api/portfolio-data` so the agent always knows the latest projects, tech stack, and experience without model retraining.
+- **Lead Capture & Verification**: Requires visitor name and email to initialize a session.
+- **Fair-Use Protection**: Enforces a strict daily limit (default 3–5 queries per email per day) tracked in Supabase.
+- **Safe Answers**: Restricted to professional topics (projects, skills, credentials, contact) with guardrails against hallucinations or personal questions.
 
-### 3. **Performance Optimized**
-- Next.js 16 with Turbopack
-- Static page generation
-- Image optimization
-- Code splitting
-- Fast page loads
+### 2. Headless Content Management (Sanity Studio)
+- Direct access to manage content at `/studio` in development or production.
+- **Profile**: Full name, title, bio, stats counters, and rotating hero titles.
+- **Projects**: Title, description, categories, deployment URLs, GitHub repositories, and preview mockups.
+- **Certifications**: Credential name, issuer, issue date, credential ID, badge graphics, and verification URLs.
+- **Tech Stack**: Technologies organized by categories (AI Engineering, Frontend, Backend, DevOps, Digital Marketing).
+- **Experiences**: Timeline nodes with year, company, role, and description.
 
-### 4. **SEO & Social Sharing**
-- Optimized metadata
-- OpenGraph tags
-- Semantic HTML
-- Sitemap ready
+### 3. Cyberpunk Visual Experience
+- **Color Palette**:
+  - Neon Cyan (`#00f0ff`) - Primary telemetry & active states
+  - Neon Magenta (`#ff007f` / `#ff0055`) - Secondary accents & alert nodes
+  - Matrix Green (`#00ff9f`) - System online status & verification indicators
+  - Void Black (`#05060b` / `#07080f`) - High-contrast backdrop with cyber-grid overlays
+- **3D Interactive Wireframe**: Canvas rendering an interactive mathematical Torus Knot that reacts to hover and viewport sizing.
+- **Micro-interactions**: Corner notches, HUD bounding boxes, scanlines, and animated pulse glows.
 
-## 🛠️ Installation & Setup
+---
+
+## 🛠️ Local Development Setup
 
 ### Prerequisites
-- Node.js 18+ (for frontend)
-- Python 3.14+ (for backend)
-- uv package manager (for backend)
-- Supabase account
-- OpenRouter API key
+- **Node.js**: v18.17+ or v20+
+- **Python**: v3.12+
+- **uv** (recommended): `curl -LsSf https://astral.sh/uv/install.sh | sh` (or `pip`)
+- **Sanity Account**: For CMS content management
+- **Supabase Project**: For chat session storage
+- **OpenRouter API Key**: For AI agent responses
+
+---
 
 ### 1. Clone Repository
 ```bash
-git clone https://github.com/OsamabinAdnan/portfolio-app.git
-cd portfolio-app/osamabinadnan
+git clone https://github.com/OsamabinAdnan/My-Portfolio-App.git
+cd My-Portfolio-App
 ```
+
+---
 
 ### 2. Frontend Setup
-```bash
-cd frontend
 
-# Install dependencies
-npm install
+1. Navigate to the frontend directory:
+   ```bash
+   cd frontend
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Create your local environment file `.env.local`:
+   ```env
+   # Sanity CMS Configuration
+   NEXT_PUBLIC_SANITY_PROJECT_ID=your_sanity_project_id
+   NEXT_PUBLIC_SANITY_DATASET=production
+   NEXT_PUBLIC_SANITY_API_VERSION=2024-03-01
+   SANITY_API_TOKEN=your_sanity_api_read_write_token
 
-# Create .env.local
-echo "NEXT_PUBLIC_API_URL=http://localhost:8000" > .env.local
+   # Backend API URL (for OBIN chatbot)
+   NEXT_PUBLIC_API_URL=http://localhost:8000
+   ```
+4. Run the development server:
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser.  
+   Sanity Studio is accessible at [http://localhost:3000/studio](http://localhost:3000/studio).
 
-# Run development server
-npm run dev
-```
-
-Frontend will be available at: http://localhost:3000
+---
 
 ### 3. Backend Setup
-```bash
-cd backend
 
-# Install uv (if not installed)
-curl -LsSf https://astral.sh/uv/install.sh | sh
+1. Navigate to the backend directory:
+   ```bash
+   cd ../backend
+   ```
+2. Install dependencies with `uv`:
+   ```bash
+   uv sync
+   ```
+3. Create your backend environment file `.env`:
+   ```env
+   # Supabase Database
+   SUPABASE_URL=https://your-project.supabase.co
+   SUPABASE_PUBLISHABLE_KEY=your-supabase-publishable-key
+   SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key
+   SUPABASE_ANON_KEY=your-supabase-anon-key
 
-# Sync dependencies
-uv sync
+   # OpenRouter LLM Provider
+   OPENROUTER_API_KEY=sk-or-v1-your-openrouter-key
+   BASE_URL=https://openrouter.ai/api/v1
+   MODEL_NAME=nvidia/nemotron-3.5-lightning:free
+   MODEL_FALLBACKS=google/gemma-4-26b-a4b-it:free,arcee-ai/trinity-large-thinking:free
 
-# Create .env file (see backend/.env.example)
-# Add your Supabase and OpenRouter credentials
+   # Chat Rules
+   CHAT_MAX_QUESTIONS_PER_EMAIL_PER_DAY=3
 
-# Run development server
-uv run uvicorn main:app --reload --port 8000
-```
+   # Portfolio data source (points to frontend API)
+   PORTFOLIO_DATA_URL=http://localhost:3000/api/portfolio-data
+   ```
+4. Start the FastAPI server:
+   ```bash
+   uv run uvicorn main:app --reload --port 8000
+   ```
+   Backend API documentation will be available at:
+   - Swagger UI: [http://localhost:8000/docs](http://localhost:8000/docs)
+   - Health Check: [http://localhost:8000/health](http://localhost:8000/health)
 
-Backend will be available at: http://localhost:8000
+---
 
-### 4. Database Setup (Supabase)
+### 4. Database Schema (Supabase)
 
-1. Create a Supabase project
-2. Run the following SQL in Supabase SQL Editor:
+Execute the following script in your **Supabase SQL Editor** to initialize the database:
 
 ```sql
--- Create chat_sessions table
-CREATE TABLE chat_sessions (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+-- Create chat sessions table
+CREATE TABLE IF NOT EXISTS chat_sessions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   created_at TIMESTAMPTZ DEFAULT NOW(),
   name TEXT NOT NULL,
   email TEXT NOT NULL,
@@ -206,21 +264,21 @@ CREATE TABLE chat_sessions (
   status TEXT NOT NULL DEFAULT 'active'
 );
 
--- Create chat_messages table
-CREATE TABLE chat_messages (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+-- Create chat messages table
+CREATE TABLE IF NOT EXISTS chat_messages (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  session_id UUID REFERENCES chat_sessions(id),
+  session_id UUID REFERENCES chat_sessions(id) ON DELETE CASCADE,
   role TEXT NOT NULL CHECK (role IN ('user', 'assistant')),
   content TEXT NOT NULL
 );
 
--- Create indexes
-CREATE INDEX idx_chat_sessions_email ON chat_sessions(email);
-CREATE INDEX idx_chat_messages_session_id ON chat_messages(session_id);
-CREATE INDEX idx_chat_messages_created_at ON chat_messages(created_at);
+-- Performance indexes
+CREATE INDEX IF NOT EXISTS idx_chat_sessions_email ON chat_sessions(email);
+CREATE INDEX IF NOT EXISTS idx_chat_messages_session_id ON chat_messages(session_id);
+CREATE INDEX IF NOT EXISTS idx_chat_messages_created_at ON chat_messages(created_at);
 
--- Create function to increment questions
+-- Increment counter function
 CREATE OR REPLACE FUNCTION increment_questions_used(session_id_param UUID)
 RETURNS void AS $$
 BEGIN
@@ -230,192 +288,75 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
--- Enable RLS
+-- Enable Row Level Security (RLS)
 ALTER TABLE chat_sessions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE chat_messages ENABLE ROW LEVEL SECURITY;
 
--- Revoke public access (backend uses service role key)
-REVOKE ALL ON chat_sessions FROM anon, authenticated;
-REVOKE ALL ON chat_messages FROM anon, authenticated;
+-- Backend accesses tables via service role key; revoke anon access
+REVOKE ALL ON chat_sessions FROM anon;
+REVOKE ALL ON chat_messages FROM anon;
 ```
-
-## 🌐 Environment Variables
-
-### Frontend (`.env.local`)
-```env
-NEXT_PUBLIC_API_URL=http://localhost:8000
-```
-
-### Backend (`.env`)
-```env
-# Supabase
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
-SUPABASE_PUBLISHABLE_KEY=your-publishable-key
-SUPABASE_ANON_KEY=your-anon-key
-
-# OpenRouter
-OPENROUTER_API_KEY=sk-or-v1-your-api-key
-BASE_URL=https://openrouter.ai/api/v1
-MODEL_NAME=inclusionai/ring-2.6-1t:free
-
-# Chat Configuration
-CHAT_MAX_QUESTIONS_PER_EMAIL_PER_DAY=3
-```
-
-## 📊 API Endpoints
-
-### Backend API
-- `GET /` - API information
-- `GET /health` - Health check
-- `GET /docs` - Swagger UI documentation
-- `GET /redoc` - ReDoc documentation
-- `POST /chat/start` - Start new chat session
-- `POST /chat/message` - Send message in session
-
-### Frontend API
-- `POST /api/ai/chat` - Fallback AI chat endpoint
-
-## 🎨 Design System
-
-### Colors
-- **Primary**: `#a73dff` (Purple)
-- **Secondary**: `#8b2fd9` (Dark Purple)
-- **Background**: `#0a0a0a` (Near Black)
-- **Text**: `#ffffff` (White)
-
-### Fonts
-- **Body**: Inter
-- **Headings**: Space Grotesk
-- **Logo**: Orbitron
-
-## 🚀 Deployment
-
-### Frontend (Vercel - Recommended)
-```bash
-cd frontend
-vercel deploy
-```
-
-### Backend (Railway/Render)
-```bash
-cd backend
-# Follow platform-specific deployment guide
-```
-
-### Environment Variables
-Remember to set all environment variables in your deployment platform.
-
-## 📱 Features Breakdown
-
-### Portfolio Sections
-- ✅ Hero with animated role transitions
-- ✅ About section with stats
-- ✅ Work experience timeline
-- ✅ Tech stack with category tabs
-- ✅ Projects showcase with filters
-- ✅ Contact section
-- ✅ Footer with social links
-
-### Chatbot (OBIN)
-- ✅ Lead capture form
-- ✅ Session management
-- ✅ Rate limiting (3 questions/day)
-- ✅ AI-powered responses
-- ✅ Context-aware answers
-- ✅ Mobile responsive
-
-### Additional Features
-- ✅ WhatsApp floating button
-- ✅ Resume download (PDF)
-- ✅ Custom 404 page
-- ✅ Sticky social sidebar
-- ✅ Mobile navigation menu
-- ✅ Dark theme
-
-## 🧪 Testing
-
-### Frontend
-```bash
-cd frontend
-npm run build  # Check for build errors
-npm run lint   # Check for linting errors
-```
-
-### Backend
-```bash
-cd backend
-uv run python test/test_gemini.py  # Test OpenRouter connection
-curl http://localhost:8000/health   # Test health endpoint
-```
-
-## 📈 Performance
-
-- **Lighthouse Score**: 90+ (Performance, Accessibility, Best Practices, SEO)
-- **First Contentful Paint**: < 1.5s
-- **Time to Interactive**: < 3s
-- **Bundle Size**: Optimized with code splitting
-
-## 🔒 Security
-
-- CORS configured for production
-- Environment variables for secrets
-- Supabase RLS enabled
-- Input validation with Pydantic
-- Rate limiting on chatbot
-- SQL injection prevention
-
-## 📝 Data Management
-
-All portfolio data is centralized in `frontend/lib/data/data.json`:
-- Profile information
-- Tech stack
-- Projects
-- Work experience
-- Social links
-
-Update this single file to reflect across the entire application.
-
-## 🤝 Contributing
-
-This is a personal portfolio project. Feel free to fork and adapt for your own use.
-
-## 📄 License
-
-MIT License - feel free to use this project as inspiration for your own portfolio.
-
-## 👤 Author
-
-**Osama bin Adnan**
-- **Title**: Agentic AI Engineer, Web Developer, Digital Marketer & Textile Engineer
-- **Location**: Karachi, Pakistan
-- **GitHub**: [@OsamabinAdnan](https://github.com/OsamabinAdnan)
-- **LinkedIn**: [Osama bin Adnan](https://www.linkedin.com/in/osama-bin-adnan/)
-- **Email**: imosamabinadnan@gmail.com
-- **Twitter**: [@osamabinadnan1](https://x.com/osamabinadnan1)
-
-## 🙏 Acknowledgments
-
-- Next.js team for the amazing framework
-- FastAPI for the elegant Python API framework
-- Supabase for the backend infrastructure
-- OpenRouter for AI model access
-- Vercel for hosting platform
-
-## 📅 Version History
-
-- **v1.0.0** (May 12, 2026) - Initial release
-  - Portfolio website with all sections
-  - OBIN chatbot integration
-  - Responsive design
-  - Custom 404 page
-
-## 📞 Support
-
-For questions or issues:
-- Open an issue on GitHub
-- Email: imosamabinadnan@gmail.com
 
 ---
 
-**Built with ❤️ by Osama bin Adnan**
+## 📡 API Endpoints
+
+### Frontend Endpoints
+| Method | Path | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/portfolio-data` | Aggregates all Sanity documents (profile, projects, certifications, skills) into structured JSON consumed by the backend AI agent. |
+
+### Backend Endpoints
+| Method | Path | Description |
+| :--- | :--- | :--- |
+| `GET` | `/` | API status, version, and feature capabilities. |
+| `GET` | `/health` | Healthcheck endpoint (`{"ok": true}`). |
+| `POST` | `/chat/start` | Validates user lead info, initializes session in Supabase, and returns remaining question quota. |
+| `POST` | `/chat/message` | Verifies rate limits, runs the AI agent using live Sanity context, records the message history, and returns the response. |
+
+---
+
+## 🚢 Production Deployment
+
+### Frontend (Vercel)
+1. Import repository into [Vercel](https://vercel.com).
+2. Set Root Directory to `frontend`.
+3. Configure Environment Variables in Vercel Project Settings:
+   - `NEXT_PUBLIC_SANITY_PROJECT_ID`
+   - `NEXT_PUBLIC_SANITY_DATASET`
+   - `NEXT_PUBLIC_SANITY_API_VERSION`
+   - `SANITY_API_TOKEN`
+   - `NEXT_PUBLIC_API_URL` (Points to your Hugging Face Space URL, e.g., `https://osamabinadnan-my-portfolio-backend.hf.space`)
+4. **Important**: Add your Vercel URL (e.g. `https://osamabinadnan.vercel.app`) to your Sanity Project -> **API** -> **CORS origins** with credentials enabled.
+
+### Backend (Hugging Face Spaces)
+1. Create a new **Docker Space** on Hugging Face.
+2. Link the repository or push the `backend/` directory with the included `Dockerfile`.
+3. Add Repository Secrets in Space Settings:
+   - `SUPABASE_URL`
+   - `SUPABASE_SERVICE_ROLE_KEY`
+   - `SUPABASE_PUBLISHABLE_KEY`
+   - `SUPABASE_ANON_KEY`
+   - `OPENROUTER_API_KEY`
+   - `BASE_URL`
+   - `PORTFOLIO_DATA_URL` (`https://osamabinadnan.vercel.app/api/portfolio-data`)
+   - `CHAT_MAX_QUESTIONS_PER_EMAIL_PER_DAY`
+
+---
+
+## 👤 Author
+
+**Osama bin Adnan**  
+*Agentic AI Developer | FullStack Web Developer | Digital Marketer*  
+📍 Karachi, Pakistan  
+- **Website**: [osamabinadnan.vercel.app](https://osamabinadnan.vercel.app/)  
+- **LinkedIn**: [linkedin.com/in/osama-bin-adnan](https://www.linkedin.com/in/osama-bin-adnan/)  
+- **GitHub**: [@OsamabinAdnan](https://github.com/OsamabinAdnan)  
+- **X / Twitter**: [@osamabinadnan1](https://x.com/osamabinadnan1)  
+- **Email**: [imosamabinadnan@gmail.com](mailto:imosamabinadnan@gmail.com)  
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
